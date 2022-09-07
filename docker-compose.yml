@@ -1,0 +1,32 @@
+# development docker compose
+version: "3"
+services:
+  api:
+    build:
+      context: ./api
+    container_name: movies-hateos-api
+    ports:
+      - 8080:8080
+    env_file:
+      - ./api/.env.development
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: ./web
+    container_name: movies-hateos-web
+    ports:
+      - 80:80
+
+  db:
+    image: postgres:alpine
+    container_name: movies-hateos-db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: development
+      POSTGRES_DB: movies
+      PGDATA: /var/lib/postgres
